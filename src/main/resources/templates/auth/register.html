@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Register - GSM Shop')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+
+<main class="container flex-grow-1 d-flex align-items-center justify-content-center">
+    <div class="card shadow" style="max-width: 480px; width: 100%;">
+        <div class="card-body p-4">
+            <h3 class="card-title text-center mb-4">Create Account</h3>
+
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <form th:action="@{/register}" method="post">
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName"
+                               th:value="${firstName}" required>
+                    </div>
+                    <div class="col">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName"
+                               th:value="${lastName}" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email"
+                           th:value="${email}" placeholder="your@email.com" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                           minlength="6" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Register</button>
+            </form>
+
+            <p class="text-center mt-3 mb-0">
+                Already have an account? <a th:href="@{/login}">Login</a>
+            </p>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>
