@@ -18,14 +18,13 @@
                     <select class="form-select" name="productType" id="productType"
                             th:disabled="${product != null && product.id != null}">
                         <option value="PHONE"
-                                th:selected="${product != null && product.getClass().getSimpleName() == 'Phone'}">Phone</option>
+                                th:selected="${product != null && product.isPhone()}">Phone</option>
                         <option value="ACCESSORY"
-                                th:selected="${product != null && product.getClass().getSimpleName() == 'Accessory'}">Accessory</option>
+                                th:selected="${product != null && product.isAccessory()}">Accessory</option>
                     </select>
-                    <!-- Hidden field to ensure value is submitted when select is disabled -->
                     <input th:if="${product != null && product.id != null}" type="hidden"
                            name="productType"
-                           th:value="${product.getClass().getSimpleName() == 'Phone' ? 'PHONE' : 'ACCESSORY'}">
+                           th:value="${product.isPhone() ? 'PHONE' : 'ACCESSORY'}">
                 </div>
 
                 <!-- Common Fields -->
@@ -74,46 +73,46 @@
                         <div class="col-md-4">
                             <label class="form-label">Processor</label>
                             <input type="text" class="form-control" name="processor"
-                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.processor : ''}">
+                                   th:value="${product != null && product.isPhone() ? product.processor : ''}">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Screen Size (inches)</label>
                             <input type="number" class="form-control" name="screenSize" step="0.01"
-                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.screenSize : ''}">
+                                   th:value="${product != null && product.isPhone() ? product.screenSize : ''}">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Screen Resolution</label>
                             <input type="text" class="form-control" name="screenResolution"
-                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.screenResolution : ''}">
+                                   th:value="${product != null && product.isPhone() ? product.screenResolution : ''}">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-3">
                             <label class="form-label">RAM (GB)</label>
                             <input type="number" class="form-control" name="ramGb"
-                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.ramGb : ''}">
+                                   th:value="${product != null && product.isPhone() ? product.ramGb : ''}">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Storage (GB)</label>
                             <input type="number" class="form-control" name="romGb"
-                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.romGb : ''}">
+                                   th:value="${product != null && product.isPhone() ? product.romGb : ''}">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Battery (mAh)</label>
                             <input type="number" class="form-control" name="batteryCapacity"
-                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.batteryCapacity : ''}">
+                                   th:value="${product != null && product.isPhone() ? product.batteryCapacity : ''}">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Charging (W)</label>
                             <input type="number" class="form-control" name="chargingPower"
-                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.chargingPower : ''}">
+                                   th:value="${product != null && product.isPhone() ? product.chargingPower : ''}">
                         </div>
                     </div>
 
                     <!-- Cameras -->
                     <h6>Cameras</h6>
                     <div id="cameraList">
-                        <div th:if="${product != null && product.getClass().getSimpleName() == 'Phone'}"
+                        <div th:if="${product != null && product.isPhone()}"
                              th:each="cam : ${product.cameras}" class="row mb-2 camera-row">
                             <div class="col-md-4">
                                 <input type="text" class="form-control" name="camType"
@@ -148,12 +147,12 @@
                         <div class="col-md-6">
                             <label class="form-label">Accessory Type</label>
                             <input type="text" class="form-control" name="accessoryType"
-                                   th:value="${product?.getClass().getSimpleName() == 'Accessory' ? product.accessoryType : ''}">
+                                   th:value="${product != null && product.isAccessory() ? product.accessoryType : ''}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Compatible Models</label>
                             <input type="text" class="form-control" name="compatibleModels"
-                                   th:value="${product?.getClass().getSimpleName() == 'Accessory' ? product.compatibleModels : ''}">
+                                   th:value="${product != null && product.isAccessory() ? product.compatibleModels : ''}">
                         </div>
                     </div>
                 </div>

@@ -2,11 +2,13 @@ package hr.bmestric.gsmshop.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,4 +42,20 @@ public abstract class Product extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @Transient
+    public String getProductType() {
+        DiscriminatorValue dv = this.getClass().getAnnotation(DiscriminatorValue.class);
+        return dv != null ? dv.value() : "UNKNOWN";
+    }
+
+    @Transient
+    public boolean isPhone() {
+        return "PHONE".equals(getProductType());
+    }
+
+    @Transient
+    public boolean isAccessory() {
+        return "ACCESSORY".equals(getProductType());
+    }
 }

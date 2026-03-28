@@ -52,7 +52,7 @@
             </div>
 
             <!-- Phone Specs -->
-            <div th:if="${product.getClass().getSimpleName() == 'Phone'}" class="mt-4">
+            <div th:if="${product.isPhone()}" class="mt-4">
                 <h5>Specifications</h5>
                 <table class="table table-striped">
                     <tbody>
@@ -104,7 +104,7 @@
             </div>
 
             <!-- Accessory Info -->
-            <div th:if="${product.getClass().getSimpleName() == 'Accessory'}" class="mt-4">
+            <div th:if="${product.isAccessory()}" class="mt-4">
                 <h5>Details</h5>
                 <table class="table table-striped">
                     <tbody>

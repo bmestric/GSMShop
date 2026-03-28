@@ -31,9 +31,9 @@
             <tr th:each="product : ${products}">
                 <td th:text="${product.id}">1</td>
                 <td>
-                    <span th:if="${product.getClass().getSimpleName() == 'Phone'}"
+                    <span th:if="${product.isPhone()}"
                           class="badge bg-info">Phone</span>
-                    <span th:if="${product.getClass().getSimpleName() == 'Accessory'}"
+                    <span th:if="${product.isAccessory()}"
                           class="badge bg-secondary">Accessory</span>
                 </td>
                 <td th:text="${product.name}">Name</td>
