@@ -182,11 +182,13 @@ error/404.html, 403.html
 - [x] `LoginSuccessHandler` (login history)
 - [x] Thymeleaf fragments (navbar, head, footer) + custom.css
 
-### Phase 3: Public Catalog
-- [ ] `CategoryService`, `ProductService`
-- [ ] `HomeController`, `CategoryController`, `ProductController`
-- [ ] Templates: index, categories, products
-- [ ] Bootstrap navbar fragments
+### Phase 3: Public Catalog ✅ (completed 2026-03-28)
+- [x] `CategoryService`, `ProductService` (interfaces + impls)
+- [x] `HomeController`, `CategoryController`, `ProductController`
+- [x] Templates: index, category/list, category/products, product/list, product/detail
+- [x] Bootstrap navbar fragments (done in Phase 2)
+- [x] Product detail shows Phone specs + cameras table, Accessory details
+- [x] Category filter pills on product list, hover animations on cards
 
 ### Phase 4: Shopping Cart
 - [ ] `Cart`/`CartItem` DTOs

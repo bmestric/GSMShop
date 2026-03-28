@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: head(${product?.name} + ' - GSM Shop')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+
+<main class="container flex-grow-1 py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/products}">Products</a></li>
+            <li class="breadcrumb-item active" th:text="${product?.name}">Product</li>
+        </ol>
+    </nav>
+
+    <div th:if="${product}" class="row">
+        <!-- Product Image Placeholder -->
+        <div class="col-md-5 text-center mb-4">
+            <div class="bg-light rounded p-5">
+                <i class="bi bi-phone" style="font-size: 8rem; color: #6c757d;"></i>
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-7">
+            <span class="badge bg-secondary mb-2" th:text="${product.category?.name}">Category</span>
+            <h2 th:text="${product.name}">Product Name</h2>
+            <p class="text-muted" th:text="${product.description}">Description</p>
+            <h3 class="text-primary mb-3" th:text="'€' + ${product.price}">€0.00</h3>
+
+            <div class="mb-3">
+                <span th:if="${product.stockQuantity > 0}" class="badge bg-success">In Stock</span>
+                <span th:if="${product.stockQuantity <= 0}" class="badge bg-danger">Out of Stock</span>
+                <small class="text-muted ms-2"
+                       th:text="${product.stockQuantity} + ' available'">0 available</small>
+            </div>
+
+            <form th:action="@{/cart/add}" method="post" sec:authorize="isAuthenticated()">
+                <input type="hidden" name="productId" th:value="${product.id}">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <label for="quantity" class="form-label mb-0">Qty:</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity"
+                           value="1" min="1" th:max="${product.stockQuantity}" style="width: 80px;">
+                    <button type="submit" class="btn btn-primary"
+                            th:disabled="${product.stockQuantity <= 0}">
+                        <i class="bi bi-cart-plus"></i> Add to Cart
+                    </button>
+                </div>
+            </form>
+            <div sec:authorize="!isAuthenticated()" class="mb-3">
+                <a th:href="@{/login}" class="btn btn-outline-primary">Login to purchase</a>
+            </div>
+
+            <!-- Phone Specs -->
+            <div th:if="${product.getClass().getSimpleName() == 'Phone'}" class="mt-4">
+                <h5>Specifications</h5>
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <th>Processor</th>
+                        <td th:text="${product.processor}">-</td>
+                    </tr>
+                    <tr>
+                        <th>Screen</th>
+                        <td th:text="${product.screenSize} + '&quot; ' + ${product.screenResolution}">-</td>
+                    </tr>
+                    <tr>
+                        <th>RAM</th>
+                        <td th:text="${product.ramGb} + ' GB'">-</td>
+                    </tr>
+                    <tr>
+                        <th>Storage</th>
+                        <td th:text="${product.romGb} + ' GB'">-</td>
+                    </tr>
+                    <tr>
+                        <th>Battery</th>
+                        <td th:text="${product.batteryCapacity} + ' mAh'">-</td>
+                    </tr>
+                    <tr>
+                        <th>Charging</th>
+                        <td th:text="${product.chargingPower} + 'W'">-</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- Camera Specs -->
+                <h5>Cameras</h5>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Megapixels</th>
+                        <th>Aperture</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="camera : ${product.cameras}">
+                        <td th:text="${camera.type}">Main</td>
+                        <td th:text="${camera.megapixels} + ' MP'">50 MP</td>
+                        <td th:text="${camera.aperture}">f/1.8</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Accessory Info -->
+            <div th:if="${product.getClass().getSimpleName() == 'Accessory'}" class="mt-4">
+                <h5>Details</h5>
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <th>Type</th>
+                        <td th:text="${product.accessoryType}">-</td>
+                    </tr>
+                    <tr>
+                        <th>Compatible With</th>
+                        <td th:text="${product.compatibleModels}">-</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>
