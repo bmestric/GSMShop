@@ -24,3 +24,8 @@
 **Context**: `@ServletComponentScan` does not exist in Spring Boot 4.0.5.
 **Decision**: Use `@Component` for listeners instead of `@WebListener` + `@ServletComponentScan`.
 **Reason**: Spring Boot 4 removed this annotation. Spring-managed beans via `@Component` achieve the same result.
+
+## Decision 005: Jackson 3.x package change in Spring Boot 4 (2026-03-28)
+**Context**: Spring Boot 4.0.5 ships Jackson 3.1.0 which moved from `com.fasterxml.jackson` to `tools.jackson`.
+**Decision**: Use `tools.jackson.databind.JsonNode` for PayPal REST API response parsing. Added `spring-boot-starter-json` dependency explicitly.
+**Reason**: Jackson 3.x is a breaking change from 2.x. All Jackson imports must use the `tools.jackson` package prefix.
