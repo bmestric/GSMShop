@@ -190,11 +190,11 @@ error/404.html, 403.html
 - [x] Product detail shows Phone specs + cameras table, Accessory details
 - [x] Category filter pills on product list, hover animations on cards
 
-### Phase 4: Shopping Cart
-- [ ] `Cart`/`CartItem` DTOs
-- [ ] `CartService`, `CartController`
-- [ ] `cart/view.html`
-- [ ] Cart badge in navbar
+### Phase 4: Shopping Cart ✅ (completed 2026-03-28)
+- [x] `Cart`/`CartItem` DTOs (serializable, session-based)
+- [x] `CartService` (interface + impl), `CartController`
+- [x] `cart/view.html` (table with qty controls, order summary)
+- [x] Cart badge in navbar via `CartModelAdvice` (@ControllerAdvice)
 
 ### Phase 5: Checkout & Orders
 - [ ] `OrderService`, `CheckoutController`
