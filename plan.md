@@ -47,7 +47,9 @@ AppUser  1---*  LoginHistory
 
 **Product** (abstract, SINGLE_TABLE): `name`, `description`, `price`, `imageUrl`, `stockQuantity`, `category` (ManyToOne)
 
-**Phone** (extends Product, discriminator="PHONE"): `screenResolution`, `screenSize`, `cameraSpec`, `batteryCapacity`, `chargingPower`, `ramGb`, `romGb`, `processor`
+**Phone** (extends Product, discriminator="PHONE"): `screenResolution`, `screenSize`, `cameras` (OneToMany → Camera), `batteryCapacity`, `chargingPower`, `ramGb`, `romGb`, `processor`
+
+**Camera**: `type` (Main, Ultrawide, Telephoto, Macro), `megapixels`, `aperture`, `phone` (ManyToOne → Phone)
 
 **Accessory** (extends Product, discriminator="ACCESSORY"): `accessoryType`, `compatibleModels`
 
@@ -163,20 +165,22 @@ error/404.html, 403.html
 
 ## Implementation Phases
 
-### Phase 1: Foundation
-- [ ] Update `pom.xml` (jjwt deps)
-- [ ] Create enums, BaseEntity, all JPA entities
-- [ ] Create all repositories
-- [ ] Configure `application.properties`
-- [ ] `AppStartupListener` (data seeder)
-- [ ] Verify tables in H2 console
+### Phase 1: Foundation ✅ (completed 2026-03-28)
+- [x] Update `pom.xml` (jjwt deps, validation)
+- [x] Create enums, BaseEntity, all JPA entities
+- [x] Create all repositories
+- [x] Configure `application.properties`
+- [x] `AppStartupListener` + `ProductSeeder` (data seeder)
+- [x] Verify tables in H2 console
+- [x] **Added**: `Camera` entity (replaces `cameraSpec` string — see decision.md #001)
 
-### Phase 2: Security
-- [ ] `CustomUserDetailsService`
-- [ ] `SecurityConfig` (dual filter chains)
-- [ ] `JwtUtil`, `JwtAuthenticationFilter`
-- [ ] `AuthController` + login/register templates
-- [ ] `AuthenticationSuccessHandler` (login history)
+### Phase 2: Security ✅ (completed 2026-03-28)
+- [x] `CustomUserDetailsService`
+- [x] `SecurityConfig` (dual filter chains)
+- [x] `JwtUtil`, `JwtAuthenticationFilter`
+- [x] `AuthController` + login/register templates
+- [x] `LoginSuccessHandler` (login history)
+- [x] Thymeleaf fragments (navbar, head, footer) + custom.css
 
 ### Phase 3: Public Catalog
 - [ ] `CategoryService`, `ProductService`

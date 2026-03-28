@@ -1,6 +1,7 @@
 package hr.bmestric.gsmshop.listener;
 
 import hr.bmestric.gsmshop.entity.Accessory;
+import hr.bmestric.gsmshop.entity.Camera;
 import hr.bmestric.gsmshop.entity.Category;
 import hr.bmestric.gsmshop.entity.Phone;
 import hr.bmestric.gsmshop.repository.CategoryRepository;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -38,17 +40,25 @@ public class ProductSeeder {
 
     private void seedPhones(Category category) {
         createPhone(category, "Samsung Galaxy S24 Ultra", "Flagship Samsung phone with S Pen",
-                new BigDecimal("1299.99"), 15, "3120x1440", 6.8, "200MP + 12MP + 50MP + 10MP",
-                5000, 45, 12, 256, "Snapdragon 8 Gen 3");
+                new BigDecimal("1299.99"), 15, "3120x1440", 6.8,
+                5000, 45, 12, 256, "Snapdragon 8 Gen 3",
+                cam("Main", 200, "f/1.7"), cam("Ultrawide", 12, "f/2.2"),
+                cam("Telephoto 3x", 50, "f/2.4"), cam("Telephoto 5x", 10, "f/4.9"));
         createPhone(category, "iPhone 15 Pro Max", "Apple flagship with titanium design",
-                new BigDecimal("1199.99"), 20, "2796x1290", 6.7, "48MP + 12MP + 12MP",
-                4441, 27, 8, 256, "A17 Pro");
+                new BigDecimal("1199.99"), 20, "2796x1290", 6.7,
+                4441, 27, 8, 256, "A17 Pro",
+                cam("Main", 48, "f/1.78"), cam("Ultrawide", 12, "f/2.2"),
+                cam("Telephoto 5x", 12, "f/2.8"));
         createPhone(category, "Xiaomi 14", "Powerful mid-range flagship",
-                new BigDecimal("699.99"), 30, "2670x1200", 6.36, "50MP + 50MP + 50MP",
-                4610, 90, 12, 256, "Snapdragon 8 Gen 3");
+                new BigDecimal("699.99"), 30, "2670x1200", 6.36,
+                4610, 90, 12, 256, "Snapdragon 8 Gen 3",
+                cam("Main", 50, "f/1.6"), cam("Ultrawide", 50, "f/2.2"),
+                cam("Telephoto 3.2x", 50, "f/2.0"));
         createPhone(category, "Google Pixel 8 Pro", "Best camera phone with AI features",
-                new BigDecimal("999.99"), 10, "2992x1344", 6.7, "50MP + 48MP + 48MP",
-                5050, 30, 12, 128, "Tensor G3");
+                new BigDecimal("999.99"), 10, "2992x1344", 6.7,
+                5050, 30, 12, 128, "Tensor G3",
+                cam("Main", 50, "f/1.68"), cam("Ultrawide", 48, "f/1.95"),
+                cam("Telephoto 5x", 48, "f/2.8"));
     }
 
     private void seedAccessories(Category cases, Category chargers) {
@@ -64,9 +74,18 @@ public class ProductSeeder {
         }
     }
 
+    private Camera cam(String type, int megapixels, String aperture) {
+        Camera c = new Camera();
+        c.setType(type);
+        c.setMegapixels(megapixels);
+        c.setAperture(aperture);
+        return c;
+    }
+
     private void createPhone(Category category, String name, String desc, BigDecimal price,
-                             int stock, String resolution, double screenSize, String camera,
-                             int battery, int charging, int ram, int rom, String processor) {
+                             int stock, String resolution, double screenSize,
+                             int battery, int charging, int ram, int rom,
+                             String processor, Camera... cameras) {
         Phone phone = new Phone();
         phone.setName(name);
         phone.setDescription(desc);
@@ -76,12 +95,15 @@ public class ProductSeeder {
         phone.setCategory(category);
         phone.setScreenResolution(resolution);
         phone.setScreenSize(screenSize);
-        phone.setCameraSpec(camera);
         phone.setBatteryCapacity(battery);
         phone.setChargingPower(charging);
         phone.setRamGb(ram);
         phone.setRomGb(rom);
         phone.setProcessor(processor);
+        for (Camera cam : cameras) {
+            cam.setPhone(phone);
+        }
+        phone.setCameras(List.of(cameras));
         productRepository.save(phone);
     }
 
