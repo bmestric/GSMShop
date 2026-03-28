@@ -35,7 +35,7 @@
                        th:text="${product.stockQuantity} + ' available'">0 available</small>
             </div>
 
-            <form th:action="@{/cart/add}" method="post" sec:authorize="isAuthenticated()">
+            <form th:action="@{/cart/add}" method="post">
                 <input type="hidden" name="productId" th:value="${product.id}">
                 <div class="d-flex align-items-center gap-3 mb-3">
                     <label for="quantity" class="form-label mb-0">Qty:</label>
@@ -47,9 +47,6 @@
                     </button>
                 </div>
             </form>
-            <div sec:authorize="!isAuthenticated()" class="mb-3">
-                <a th:href="@{/login}" class="btn btn-outline-primary">Login to purchase</a>
-            </div>
 
             <!-- Phone Specs -->
             <div th:if="${product.isPhone()}" class="mt-4">

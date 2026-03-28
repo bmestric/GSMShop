@@ -21,7 +21,7 @@ GSM Shop — online mobile phone and accessories web shop. College project for J
 ./mvnw clean package            # Build JAR
 ```
 
-H2 console available at `/h2-console` when running (JDBC URL: `jdbc:h2:mem:gsmshopdb`, user: `sa`, no password).
+H2 console available at `/h2-console` when running (JDBC URL: `jdbc:h2:file:./data/gsmshopdb`, user: `sa`, password: `ThisIsTest1!`). Database is file-based and persists across restarts.
 
 ## Architecture
 
@@ -65,6 +65,13 @@ Shopping cart is stored in `HttpSession` (not database) to support anonymous use
 - Always have meaningfull commit messages, save them locally and then push to github.
 - Make commits and pushs in order of development so we can track changes and have possibility to revert back.
 
+## Spring Boot 4 Gotchas
+- **No `@ServletComponentScan`** — use `@Component` for servlet listeners instead
+- **Jackson 3.x** — package is `tools.jackson` not `com.fasterxml.jackson`. Need `spring-boot-starter-json` dep explicitly.
+- **Hibernate proxies** — never use `getClass().getSimpleName()` for type checks in templates. Use `@DiscriminatorValue`-based helper methods (`isPhone()`, `isAccessory()` on `Product`).
+
 ## Reference
 
-See `plan.md` in project root for the full implementation plan with entity details, endpoints, templates, and phased build order.
+- `plan.md` — full implementation plan with phased build order (Phases 1-6.5 complete, 7-9 remaining)
+- `decision.md` — architectural decisions log (11 decisions recorded)
+- `urls.md` — local development URLs (H2 console, app pages, admin)

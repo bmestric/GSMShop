@@ -53,12 +53,14 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
         http
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/products/**", "/categories/**", "/compare/**",
                         "/css/**", "/js/**", "/images/**", "/webjars/**",
                         "/login", "/register", "/h2-console/**", "/error").permitAll()
+                .requestMatchers("/cart/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/cart/**", "/checkout/**", "/order-history/**").authenticated()
+                .requestMatchers("/checkout/**", "/order-history/**").authenticated()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

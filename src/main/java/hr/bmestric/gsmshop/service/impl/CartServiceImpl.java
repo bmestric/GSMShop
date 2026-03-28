@@ -30,7 +30,21 @@ public class CartServiceImpl implements CartService {
     public void addToCart(HttpSession session, Long productId, int quantity) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found: " + productId));
+
         Cart cart = getCart(session);
+        int currentQty = cart.getItemQuantity(productId);
+        int requestedTotal = currentQty + quantity;
+
+        if (product.getStockQuantity() <= 0) {
+            throw new IllegalStateException("Product is out of stock: " + product.getName());
+        }
+        if (requestedTotal > product.getStockQuantity()) {
+            throw new IllegalStateException(
+                    "Not enough stock for " + product.getName()
+                            + ". Available: " + product.getStockQuantity()
+                            + ", requested: " + requestedTotal);
+        }
+
         CartItem item = new CartItem(
                 product.getId(),
                 product.getName(),

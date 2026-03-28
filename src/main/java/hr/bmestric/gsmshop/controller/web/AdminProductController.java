@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,7 @@ public class AdminProductController {
 
     @GetMapping("/new")
     public String newForm(Model model) {
+        model.addAttribute("product", new Phone());
         model.addAttribute("categories", categoryService.findAll());
         return "admin/product/form";
     }
@@ -48,6 +51,7 @@ public class AdminProductController {
         return "admin/product/form";
     }
 
+    @Transactional
     @PostMapping("/save")
     public String save(@RequestParam String productType,
                        @RequestParam(required = false) Long id,

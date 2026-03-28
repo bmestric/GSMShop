@@ -44,6 +44,10 @@ public class Cart implements Serializable {
         return items.stream().mapToInt(CartItem::getQuantity).sum();
     }
 
+    public int getItemQuantity(Long productId) {
+        return findItem(productId).map(CartItem::getQuantity).orElse(0);
+    }
+
     private Optional<CartItem> findItem(Long productId) {
         return items.stream()
                 .filter(i -> i.getProductId().equals(productId))

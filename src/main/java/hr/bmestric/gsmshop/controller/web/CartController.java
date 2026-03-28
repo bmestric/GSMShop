@@ -1,6 +1,7 @@
 package hr.bmestric.gsmshop.controller.web;
 
 import hr.bmestric.gsmshop.service.CartService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/cart")
@@ -27,9 +29,17 @@ public class CartController {
     @PostMapping("/add")
     public String addToCart(@RequestParam Long productId,
                            @RequestParam(defaultValue = "1") int quantity,
-                           HttpSession session) {
-        cartService.addToCart(session, productId, quantity);
-        return "redirect:/cart";
+                           HttpSession session,
+                           HttpServletRequest request,
+                           RedirectAttributes redirectAttributes) {
+        try {
+            cartService.addToCart(session, productId, quantity);
+            redirectAttributes.addFlashAttribute("success", "Product added to cart!");
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/products");
     }
 
     @PostMapping("/update")

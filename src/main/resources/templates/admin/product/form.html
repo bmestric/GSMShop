@@ -34,11 +34,12 @@
                         <input type="text" class="form-control" id="name" name="name"
                                th:value="${product?.name}" required>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" id="categoryGroup">
                         <label for="categoryId" class="form-label">Category</label>
                         <select class="form-select" id="categoryId" name="categoryId" required>
                             <option th:each="cat : ${categories}" th:value="${cat.id}"
                                     th:text="${cat.name}"
+                                    th:attr="data-name=${cat.name}"
                                     th:selected="${product?.category?.id == cat.id}">Cat</option>
                         </select>
                     </div>
@@ -171,8 +172,50 @@
 <script>
     function toggleFields() {
         const type = document.getElementById('productType').value;
+        const isEdit = document.getElementById('productType').disabled;
         document.getElementById('phoneFields').style.display = type === 'PHONE' ? 'block' : 'none';
         document.getElementById('accessoryFields').style.display = type === 'ACCESSORY' ? 'block' : 'none';
+
+        // Category auto-selection based on product type
+        const categorySelect = document.getElementById('categoryId');
+        const categoryGroup = document.getElementById('categoryGroup');
+        const options = categorySelect.querySelectorAll('option');
+
+        if (!isEdit) {
+            if (type === 'PHONE') {
+                // Auto-select Smartphones, hide category dropdown
+                options.forEach(opt => {
+                    if (opt.dataset.name === 'Smartphones') {
+                        opt.selected = true;
+                        opt.style.display = '';
+                    } else {
+                        opt.style.display = 'none';
+                    }
+                });
+                categoryGroup.style.display = 'none';
+            } else {
+                // Accessory: show all categories except Smartphones
+                categoryGroup.style.display = '';
+                let firstVisible = null;
+                options.forEach(opt => {
+                    if (opt.dataset.name === 'Smartphones') {
+                        opt.style.display = 'none';
+                        if (opt.selected) opt.selected = false;
+                    } else {
+                        opt.style.display = '';
+                        if (!firstVisible) firstVisible = opt;
+                    }
+                });
+                if (firstVisible && !categorySelect.querySelector('option:checked:not([style*="none"])')) {
+                    firstVisible.selected = true;
+                }
+            }
+        }
+
+        // Add default camera row for new phones if none exist
+        if (type === 'PHONE' && document.querySelectorAll('.camera-row').length === 0) {
+            addCameraRow();
+        }
     }
     function addCameraRow() {
         const row = document.createElement('div');

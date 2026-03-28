@@ -209,6 +209,14 @@ error/404.html, 403.html
 - [x] Order list with filters (customerId, dateFrom, dateTo) + order detail
 - [x] Login history view (sorted by time desc, shows user/IP/user-agent)
 
+### Phase 6.5: Bug Fixes from Manual Testing ✅ (completed 2026-03-28)
+- [x] Fix admin product form first-click template parsing error (add default Phone model attribute)
+- [x] Fix admin product edit/save 500 error (@Transactional on save for camera orphanRemoval)
+- [x] Fix admin product form: auto-select category by product type (Phone→Smartphones hidden, Accessory→hide Smartphones)
+- [x] Fix admin product form: show default camera row for new phones
+- [x] Fix cart: add stock validation in addToCart (prevent negative stock, show Out of Stock badge)
+- [x] Fix cart: stay on current page after adding to cart (redirect back via Referer with toast notifications)
+
 ### Phase 7: Comparison, Filter, Listener, Async
 - [ ] `PhoneCompareController` + `compare.html`
 - [ ] `compare.js` (phone selection UI)
@@ -257,15 +265,15 @@ error/404.html, 403.html
 spring.application.name=gsmShop
 
 # H2
-spring.datasource.url=jdbc:h2:mem:gsmshopdb
-spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.url=jdbc:h2:file:./data/gsmshopdb
+spring.datasource.driver-class-name=org.h2.Driver
 spring.datasource.username=sa
-spring.datasource.password=
+spring.datasource.password=ThisIsTest1!
 spring.h2.console.enabled=true
 spring.h2.console.path=/h2-console
 
 # JPA
-spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 
 # Thymeleaf
