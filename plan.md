@@ -196,11 +196,12 @@ error/404.html, 403.html
 - [x] `cart/view.html` (table with qty controls, order summary)
 - [x] Cart badge in navbar via `CartModelAdvice` (@ControllerAdvice)
 
-### Phase 5: Checkout & Orders
-- [ ] `OrderService`, `CheckoutController`
-- [ ] Cash on Delivery flow
-- [ ] `PayPalService` (sandbox)
-- [ ] `OrderHistoryController` + templates
+### Phase 5: Checkout & Orders ✅ (completed 2026-03-28)
+- [x] `OrderService` (interface + impl with stock deduction)
+- [x] `CheckoutController` (COD + PayPal create/success/cancel)
+- [x] Cash on Delivery flow
+- [x] `PayPalService` (sandbox, RestClient-based, Orders v2 API)
+- [x] `OrderHistoryController` + templates (history list + order detail)
 
 ### Phase 6: Admin Panel
 - [ ] Category CRUD (controller + templates)
