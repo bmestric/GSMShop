@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Admin - Orders')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+
+<main class="container flex-grow-1 py-4">
+    <h2 class="mb-4">Manage Orders</h2>
+
+    <!-- Filters -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form th:action="@{/admin/orders}" method="get" class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label">Customer ID</label>
+                    <input type="number" class="form-control" name="customerId"
+                           th:value="${customerId}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Date From</label>
+                    <input type="date" class="form-control" name="dateFrom"
+                           th:value="${dateFrom}">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Date To</label>
+                    <input type="date" class="form-control" name="dateTo"
+                           th:value="${dateTo}">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a th:href="@{/admin/orders}" class="btn btn-outline-secondary">Clear</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-light">
+            <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Payment</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="'#' + ${order.id}">-</td>
+                <td th:text="${order.user.firstName} + ' ' + ${order.user.lastName}">User</td>
+                <td th:text="${#temporals.format(order.orderDate, 'dd.MM.yyyy HH:mm')}">-</td>
+                <td>
+                    <span th:if="${order.paymentMethod.name() == 'CASH_ON_DELIVERY'}"
+                          class="badge bg-success">COD</span>
+                    <span th:if="${order.paymentMethod.name() == 'PAYPAL'}"
+                          class="badge bg-warning text-dark">PayPal</span>
+                </td>
+                <td th:text="${#lists.size(order.items)}">0</td>
+                <td class="fw-bold" th:text="'€' + ${order.totalAmount}">€0</td>
+                <td>
+                    <a th:href="@{/admin/orders/{id}(id=${order.id})}"
+                       class="btn btn-outline-primary btn-sm">Details</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${#lists.isEmpty(orders)}" class="text-center py-4">
+        <p class="text-muted">No orders found.</p>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

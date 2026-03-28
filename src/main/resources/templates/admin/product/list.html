@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Admin - Products')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+
+<main class="container flex-grow-1 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Manage Products</h2>
+        <a th:href="@{/admin/products/new}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> New Product
+        </a>
+    </div>
+
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.id}">1</td>
+                <td>
+                    <span th:if="${product.getClass().getSimpleName() == 'Phone'}"
+                          class="badge bg-info">Phone</span>
+                    <span th:if="${product.getClass().getSimpleName() == 'Accessory'}"
+                          class="badge bg-secondary">Accessory</span>
+                </td>
+                <td th:text="${product.name}">Name</td>
+                <td th:text="${product.category?.name}">Category</td>
+                <td th:text="'€' + ${product.price}">€0</td>
+                <td th:text="${product.stockQuantity}">0</td>
+                <td>
+                    <a th:href="@{/admin/products/edit/{id}(id=${product.id})}"
+                       class="btn btn-outline-primary btn-sm me-1">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <form th:action="@{/admin/products/delete/{id}(id=${product.id})}"
+                          method="post" class="d-inline"
+                          onsubmit="return confirm('Delete this product?');">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

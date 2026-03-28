@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Admin - Product Form')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+
+<main class="container flex-grow-1 py-4">
+    <h2 th:text="${product != null && product.id != null ? 'Edit Product' : 'New Product'}" class="mb-4">Product</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form th:action="@{/admin/products/save}" method="post">
+                <input type="hidden" name="id" th:value="${product?.id}">
+
+                <!-- Product Type Selector -->
+                <div class="mb-3">
+                    <label class="form-label">Product Type</label>
+                    <select class="form-select" name="productType" id="productType"
+                            th:disabled="${product != null && product.id != null}">
+                        <option value="PHONE"
+                                th:selected="${product != null && product.getClass().getSimpleName() == 'Phone'}">Phone</option>
+                        <option value="ACCESSORY"
+                                th:selected="${product != null && product.getClass().getSimpleName() == 'Accessory'}">Accessory</option>
+                    </select>
+                    <!-- Hidden field to ensure value is submitted when select is disabled -->
+                    <input th:if="${product != null && product.id != null}" type="hidden"
+                           name="productType"
+                           th:value="${product.getClass().getSimpleName() == 'Phone' ? 'PHONE' : 'ACCESSORY'}">
+                </div>
+
+                <!-- Common Fields -->
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name"
+                               th:value="${product?.name}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="categoryId" class="form-label">Category</label>
+                        <select class="form-select" id="categoryId" name="categoryId" required>
+                            <option th:each="cat : ${categories}" th:value="${cat.id}"
+                                    th:text="${cat.name}"
+                                    th:selected="${product?.category?.id == cat.id}">Cat</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description"
+                              rows="3" th:text="${product?.description}"></textarea>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="price" class="form-label">Price (€)</label>
+                        <input type="number" class="form-control" id="price" name="price"
+                               step="0.01" th:value="${product?.price}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="stockQuantity" class="form-label">Stock</label>
+                        <input type="number" class="form-control" id="stockQuantity"
+                               name="stockQuantity" th:value="${product?.stockQuantity}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="imageUrl" class="form-label">Image URL</label>
+                        <input type="text" class="form-control" id="imageUrl" name="imageUrl"
+                               th:value="${product?.imageUrl}">
+                    </div>
+                </div>
+
+                <!-- Phone Fields -->
+                <div id="phoneFields">
+                    <h5 class="mt-4 mb-3">Phone Specifications</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Processor</label>
+                            <input type="text" class="form-control" name="processor"
+                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.processor : ''}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Screen Size (inches)</label>
+                            <input type="number" class="form-control" name="screenSize" step="0.01"
+                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.screenSize : ''}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Screen Resolution</label>
+                            <input type="text" class="form-control" name="screenResolution"
+                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.screenResolution : ''}">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">RAM (GB)</label>
+                            <input type="number" class="form-control" name="ramGb"
+                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.ramGb : ''}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Storage (GB)</label>
+                            <input type="number" class="form-control" name="romGb"
+                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.romGb : ''}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Battery (mAh)</label>
+                            <input type="number" class="form-control" name="batteryCapacity"
+                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.batteryCapacity : ''}">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Charging (W)</label>
+                            <input type="number" class="form-control" name="chargingPower"
+                                   th:value="${product?.getClass().getSimpleName() == 'Phone' ? product.chargingPower : ''}">
+                        </div>
+                    </div>
+
+                    <!-- Cameras -->
+                    <h6>Cameras</h6>
+                    <div id="cameraList">
+                        <div th:if="${product != null && product.getClass().getSimpleName() == 'Phone'}"
+                             th:each="cam : ${product.cameras}" class="row mb-2 camera-row">
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="camType"
+                                       placeholder="Type (Main, Ultrawide...)" th:value="${cam.type}">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="number" class="form-control" name="camMegapixels"
+                                       placeholder="MP" th:value="${cam.megapixels}">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="camAperture"
+                                       placeholder="f/1.8" th:value="${cam.aperture}">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-outline-danger btn-sm"
+                                        onclick="this.closest('.camera-row').remove();">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-secondary btn-sm mt-1"
+                            onclick="addCameraRow();">
+                        <i class="bi bi-plus"></i> Add Camera
+                    </button>
+                </div>
+
+                <!-- Accessory Fields -->
+                <div id="accessoryFields">
+                    <h5 class="mt-4 mb-3">Accessory Details</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Accessory Type</label>
+                            <input type="text" class="form-control" name="accessoryType"
+                                   th:value="${product?.getClass().getSimpleName() == 'Accessory' ? product.accessoryType : ''}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Compatible Models</label>
+                            <input type="text" class="form-control" name="compatibleModels"
+                                   th:value="${product?.getClass().getSimpleName() == 'Accessory' ? product.compatibleModels : ''}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">Save Product</button>
+                    <a th:href="@{/admin/products}" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+<script>
+    function toggleFields() {
+        const type = document.getElementById('productType').value;
+        document.getElementById('phoneFields').style.display = type === 'PHONE' ? 'block' : 'none';
+        document.getElementById('accessoryFields').style.display = type === 'ACCESSORY' ? 'block' : 'none';
+    }
+    function addCameraRow() {
+        const row = document.createElement('div');
+        row.className = 'row mb-2 camera-row';
+        row.innerHTML = `
+            <div class="col-md-4"><input type="text" class="form-control" name="camType" placeholder="Type (Main, Ultrawide...)"></div>
+            <div class="col-md-3"><input type="number" class="form-control" name="camMegapixels" placeholder="MP"></div>
+            <div class="col-md-3"><input type="text" class="form-control" name="camAperture" placeholder="f/1.8"></div>
+            <div class="col-md-2"><button type="button" class="btn btn-outline-danger btn-sm" onclick="this.closest('.camera-row').remove();"><i class="bi bi-trash"></i></button></div>`;
+        document.getElementById('cameraList').appendChild(row);
+    }
+    document.getElementById('productType').addEventListener('change', toggleFields);
+    toggleFields();
+</script>
+</body>
+</html>

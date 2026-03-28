@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Admin - Order Detail')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+
+<main class="container flex-grow-1 py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/admin/orders}">Orders</a></li>
+            <li class="breadcrumb-item active" th:text="'Order #' + ${order?.id}">Order</li>
+        </ol>
+    </nav>
+
+    <div th:if="${order}" class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 th:text="'Order #' + ${order.id}">Order</h5>
+                    <div class="mb-2">
+                        <small class="text-muted">Customer</small><br>
+                        <span th:text="${order.user.firstName} + ' ' + ${order.user.lastName}">-</span>
+                        <br><small class="text-muted" th:text="${order.user.email}">-</small>
+                    </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Date</small><br>
+                        <span th:text="${#temporals.format(order.orderDate, 'dd.MM.yyyy HH:mm')}">-</span>
+                    </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Payment</small><br>
+                        <span th:text="${order.paymentMethod.name()}">-</span>
+                    </div>
+                    <div th:if="${order.paypalTransactionId}" class="mb-2">
+                        <small class="text-muted">PayPal Transaction</small><br>
+                        <span class="small" th:text="${order.paypalTransactionId}">-</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>Total:</span>
+                        <span class="text-primary" th:text="'€' + ${order.totalAmount}">€0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header"><h5 class="mb-0">Items</h5></div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Qty</th>
+                            <th>Subtotal</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item : ${order.items}">
+                            <td th:text="${item.product.name}">Product</td>
+                            <td th:text="'€' + ${item.priceAtPurchase}">€0</td>
+                            <td th:text="${item.quantity}">1</td>
+                            <td class="fw-semibold"
+                                th:text="'€' + ${item.priceAtPurchase * item.quantity}">€0</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>

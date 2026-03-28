@@ -203,11 +203,11 @@ error/404.html, 403.html
 - [x] `PayPalService` (sandbox, RestClient-based, Orders v2 API)
 - [x] `OrderHistoryController` + templates (history list + order detail)
 
-### Phase 6: Admin Panel
-- [ ] Category CRUD (controller + templates)
-- [ ] Product CRUD (controller + templates, conditional phone fields)
-- [ ] Order list with filters
-- [ ] Login history view
+### Phase 6: Admin Panel ✅ (completed 2026-03-28)
+- [x] Category CRUD (AdminCategoryController + list/form templates)
+- [x] Product CRUD (AdminProductController + list/form with conditional Phone/Accessory fields, dynamic camera rows)
+- [x] Order list with filters (customerId, dateFrom, dateTo) + order detail
+- [x] Login history view (sorted by time desc, shows user/IP/user-agent)
 
 ### Phase 7: Comparison, Filter, Listener, Async
 - [ ] `PhoneCompareController` + `compare.html`
