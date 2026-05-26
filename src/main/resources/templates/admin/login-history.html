@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Admin - Login History')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+
+<main class="container flex-grow-1 py-4">
+    <h2 class="mb-4">Login History</h2>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-light">
+            <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Login Time</th>
+                <th>IP Address</th>
+                <th>User Agent</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entry : ${history}">
+                <td th:text="${entry.user.firstName} + ' ' + ${entry.user.lastName}">User</td>
+                <td th:text="${entry.user.email}">email</td>
+                <td th:text="${#temporals.format(entry.loginTime, 'dd.MM.yyyy HH:mm:ss')}">-</td>
+                <td th:text="${entry.ipAddress}">-</td>
+                <td class="small" style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                    th:text="${entry.userAgent}">-</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${#lists.isEmpty(history)}" class="text-center py-4">
+        <p class="text-muted">No login history recorded yet.</p>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>
