@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Compare Phones - GSM Shop')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+
+<main class="container-fluid flex-grow-1 py-4">
+    <div class="d-flex align-items-center mb-4 gap-3">
+        <h2 class="mb-0">Phone Comparison</h2>
+        <a th:href="@{/products}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i> Back to Products
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle text-center">
+            <thead class="table-dark">
+            <tr>
+                <th class="text-start" style="min-width: 160px;">Spec</th>
+                <th th:each="phone : ${phones}" th:text="${phone.name}" style="min-width: 200px;">Phone</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <!-- Price (display only) -->
+            <tr>
+                <th scope="row" class="text-start text-muted small">Price</th>
+                <td th:each="phone : ${phones}">
+                    <span th:text="'€' + ${#numbers.formatDecimal(phone.price, 1, 2)}">€0</span>
+                </td>
+            </tr>
+
+            <!-- Processor (display only) -->
+            <tr>
+                <th scope="row" class="text-start text-muted small">Processor</th>
+                <td th:each="phone : ${phones}" th:text="${phone.processor ?: '-'}">-</td>
+            </tr>
+
+            <!-- RAM (higher = better) -->
+            <tr>
+                <th scope="row" class="text-start text-muted small">RAM</th>
+                <td th:each="phone : ${phones}"
+                    th:with="val=${phone.ramGb},
+                             isBest=${val != null and val == maxRam},
+                             isWorst=${val != null and val == minRam and minRam != maxRam}"
+                    th:class="${isBest ? (maxRamCount == 1 ? 'table-success fw-bold' : 'table-warning fw-bold') : (isWorst ? (minRamCount == 1 ? 'table-danger fw-bold' : '') : '')}">
+                    <span th:text="${val != null ? val + ' GB' : '-'}">-</span>
+                </td>
+            </tr>
+
+            <!-- Storage (higher = better) -->
+            <tr>
+                <th scope="row" class="text-start text-muted small">Storage</th>
+                <td th:each="phone : ${phones}"
+                    th:with="val=${phone.romGb},
+                             isBest=${val != null and val == maxRom},
+                             isWorst=${val != null and val == minRom and minRom != maxRom}"
+                    th:class="${isBest ? (maxRomCount == 1 ? 'table-success fw-bold' : 'table-warning fw-bold') : (isWorst ? (minRomCount == 1 ? 'table-danger fw-bold' : '') : '')}">
+                    <span th:text="${val != null ? val + ' GB' : '-'}">-</span>
+                </td>
+            </tr>
+
+            <!-- Battery (higher = better) -->
+            <tr>
+                <th scope="row" class="text-start text-muted small">Battery</th>
+                <td th:each="phone : ${phones}"
+                    th:with="val=${phone.batteryCapacity},
+                             isBest=${val != null and val == maxBattery},
+                             isWorst=${val != null and val == minBattery and minBattery != maxBattery}"
+                    th:class="${isBest ? (maxBatteryCount == 1 ? 'table-success fw-bold' : 'table-warning fw-bold') : (isWorst ? (minBatteryCount == 1 ? 'table-danger fw-bold' : '') : '')}">
+                    <span th:text="${val != null ? val + ' mAh' : '-'}">-</span>
+                </td>
+            </tr>
+
+            <!-- Charging (higher = better) -->
+            <tr>
+                <th scope="row" class="text-start text-muted small">Charging</th>
+                <td th:each="phone : ${phones}"
+                    th:with="val=${phone.chargingPower},
+                             isBest=${val != null and val == maxCharging},
+                             isWorst=${val != null and val == minCharging and minCharging != maxCharging}"
+                    th:class="${isBest ? (maxChargingCount == 1 ? 'table-success fw-bold' : 'table-warning fw-bold') : (isWorst ? (minChargingCount == 1 ? 'table-danger fw-bold' : '') : '')}">
+                    <span th:text="${val != null ? val + 'W' : '-'}">-</span>
+                </td>
+            </tr>
+
+            <!-- Screen Size (larger = better) -->
+            <tr>
+                <th scope="row" class="text-start text-muted small">Screen Size</th>
+                <td th:each="phone : ${phones}"
+                    th:with="val=${phone.screenSize},
+                             isBest=${val != null and val == maxScreenSize},
+                             isWorst=${val != null and val == minScreenSize and minScreenSize != maxScreenSize}"
+                    th:class="${isBest ? (maxScreenSizeCount == 1 ? 'table-success fw-bold' : 'table-warning fw-bold') : (isWorst ? (minScreenSizeCount == 1 ? 'table-danger fw-bold' : '') : '')}">
+                    <span th:text="${val != null ? val + '&quot;' : '-'}">-</span>
+                </td>
+            </tr>
+
+            <!-- Screen Resolution (more pixels = better) -->
+            <tr>
+                <th scope="row" class="text-start text-muted small">Resolution</th>
+                <td th:each="phone : ${phones}"
+                    th:with="px=${phone.screenResolution != null ? phone.screenResolution.pixelCount : null},
+                             isBest=${px != null and px == maxPixelCount},
+                             isWorst=${px != null and px == minPixelCount and minPixelCount != maxPixelCount}"
+                    th:class="${isBest ? (maxPixelCountCount == 1 ? 'table-success fw-bold' : 'table-warning fw-bold') : (isWorst ? (minPixelCountCount == 1 ? 'table-danger fw-bold' : '') : '')}">
+                    <span th:text="${phone.screenResolution?.label ?: '-'}">-</span>
+                </td>
+            </tr>
+
+            <!-- Camera rows: one per CameraType present across compared phones -->
+            <tr th:each="camType : ${cameraTypes}">
+                <th scope="row" class="text-start text-muted small"
+                    th:text="${camType.displayName} + ' Camera'">Camera</th>
+                <td th:each="phone : ${phones}"
+                    th:with="phoneMap=${phoneCameraMpMap[phone.id.toString()]},
+                             mp=${phoneMap != null ? phoneMap[camType.name()] : null},
+                             maxMp=${maxMpPerType[camType.name()]},
+                             minMp=${minMpPerType[camType.name()]},
+                             maxCnt=${maxMpCountPerType[camType.name()]},
+                             minCnt=${minMpCountPerType[camType.name()]},
+                             isBest=${mp != null and mp == maxMp},
+                             isWorst=${mp != null and mp == minMp and minMp != maxMp}"
+                    th:class="${isBest ? (maxCnt == 1 ? 'table-success fw-bold' : 'table-warning fw-bold') : (isWorst ? (minCnt == 1 ? 'table-danger fw-bold' : '') : '')}">
+                    <span th:text="${mp != null ? mp + ' MP' : '-'}">-</span>
+                </td>
+            </tr>
+
+            <!-- Stock -->
+            <tr>
+                <th scope="row" class="text-start text-muted small">Stock</th>
+                <td th:each="phone : ${phones}">
+                    <span th:if="${phone.stockQuantity > 0}" class="badge bg-success"
+                          th:text="${phone.stockQuantity} + ' in stock'">In stock</span>
+                    <span th:if="${phone.stockQuantity <= 0}" class="badge bg-danger">Out of Stock</span>
+                </td>
+            </tr>
+
+            <!-- Action -->
+            <tr>
+                <th scope="row" class="text-start text-muted small">Action</th>
+                <td th:each="phone : ${phones}">
+                    <a th:href="@{/products/{id}(id=${phone.id})}" class="btn btn-primary btn-sm">View &amp; Buy</a>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Legend -->
+    <div class="d-flex gap-3 mt-2 small text-muted">
+        <span><span class="badge bg-success">&nbsp;&nbsp;</span> Best (unique)</span>
+        <span><span class="badge bg-warning text-dark">&nbsp;&nbsp;</span> Tied best</span>
+        <span><span class="badge bg-danger">&nbsp;&nbsp;</span> Worst (unique)</span>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>
