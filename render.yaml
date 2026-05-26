@@ -1,0 +1,45 @@
+services:
+  - type: web
+    name: gsmshop
+    runtime: java
+    buildCommand: "./mvnw clean package -DskipTests"
+    startCommand: "java -jar target/gsmShop-0.0.1-SNAPSHOT.jar"
+    healthCheckPath: /
+    envVars:
+      # Render injects PORT automatically — app reads it via ${PORT:8081}
+
+      # Database — populated from the linked PostgreSQL instance below
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: gsmshop-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: gsmshop-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: gsmshop-db
+          property: password
+
+      # Production overrides
+      - key: THYMELEAF_CACHE
+        value: "true"
+      - key: JPA_SHOW_SQL
+        value: "false"
+      - key: H2_CONSOLE_ENABLED
+        value: "false"
+
+      # Secrets — fill these in the Render dashboard after first deploy
+      - key: JWT_SECRET
+        sync: false        # marks it as a secret — must be set manually in Render UI
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+
+databases:
+  - name: gsmshop-db
+    plan: free
+    databaseName: gsmshop
+    user: gsmshop
