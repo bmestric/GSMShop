@@ -1,18 +1,17 @@
 services:
   - type: web
     name: gsmshop
-    runtime: java
-    buildCommand: "./mvnw clean package -DskipTests"
-    startCommand: "java -jar target/gsmShop-0.0.1-SNAPSHOT.jar"
+    env: docker
     healthCheckPath: /
     envVars:
       # Render injects PORT automatically — app reads it via ${PORT:8081}
 
-      # Database — populated from the linked PostgreSQL instance below
+      # Database
+      # SPRING_DATASOURCE_URL must be set manually in the Render dashboard.
+      # Go to the PostgreSQL database → Info → copy "External Database URL",
+      # prepend "jdbc:" so it becomes jdbc:postgresql://user:pass@host/db
       - key: SPRING_DATASOURCE_URL
-        fromDatabase:
-          name: gsmshop-db
-          property: connectionString
+        sync: false
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: gsmshop-db
