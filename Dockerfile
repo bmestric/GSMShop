@@ -3,9 +3,9 @@ FROM eclipse-temurin:21-jdk-alpine AS build
 WORKDIR /app
 COPY .mvn/ .mvn/
 COPY mvnw pom.xml ./
-RUN chmod +x mvnw && ./mvnw dependency:resolve -q
+RUN chmod +x mvnw && ./mvnw dependency:resolve
 COPY src/ src/
-RUN ./mvnw clean package -DskipTests -q
+RUN ./mvnw clean package -DskipTests
 
 # ---- Run stage ----
 FROM eclipse-temurin:21-jre-alpine
