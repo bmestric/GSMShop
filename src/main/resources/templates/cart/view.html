@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Cart - GSM Shop')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments/header :: navbar}"></nav>
+
+<main class="container flex-grow-1 py-4">
+    <h2 class="mb-4">Shopping Cart</h2>
+
+    <!-- Empty Cart -->
+    <div th:if="${#lists.isEmpty(cart.items)}" class="text-center py-5">
+        <i class="bi bi-cart-x" style="font-size: 4rem; color: #6c757d;"></i>
+        <p class="text-muted fs-5 mt-3">Your cart is empty.</p>
+        <a th:href="@{/products}" class="btn btn-primary mt-2">Browse Products</a>
+    </div>
+
+    <!-- Cart Items -->
+    <div th:if="${!#lists.isEmpty(cart.items)}">
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th style="width: 150px;">Quantity</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${cart.items}">
+                    <td>
+                        <a th:href="@{/products/{id}(id=${item.productId})}"
+                           class="text-decoration-none text-dark fw-semibold"
+                           th:text="${item.productName}">Product</a>
+                    </td>
+                    <td th:text="'€' + ${item.price}">€0.00</td>
+                    <td>
+                        <form th:action="@{/cart/update}" method="post" class="d-flex align-items-center gap-1">
+                            <input type="hidden" name="productId" th:value="${item.productId}">
+                            <input type="number" class="form-control form-control-sm" name="quantity"
+                                   th:value="${item.quantity}" min="1" style="width: 70px;">
+                            <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </button>
+                        </form>
+                    </td>
+                    <td class="fw-semibold" th:text="'€' + ${item.subtotal}">€0.00</td>
+                    <td>
+                        <form th:action="@{/cart/remove/{id}(id=${item.productId})}" method="post">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="row justify-content-end">
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Order Summary</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Items:</span>
+                            <span th:text="${cart.totalItemCount}">0</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between fw-bold fs-5">
+                            <span>Total:</span>
+                            <span class="text-primary" th:text="'€' + ${cart.total}">€0.00</span>
+                        </div>
+                        <a th:href="@{/checkout}" class="btn btn-primary w-100 mt-3">
+                            Proceed to Checkout
+                        </a>
+                        <form th:action="@{/cart/clear}" method="post" class="mt-2">
+                            <button type="submit" class="btn btn-outline-danger w-100">Clear Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<div th:replace="~{fragments/footer :: scripts}"></div>
+</body>
+</html>
