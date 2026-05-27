@@ -32,7 +32,7 @@
                     </a>
                 </li>
                 <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
-                    <button type="button" class="nav-link dropdown-toggle btn btn-link p-0"
+                    <button type="button" class="nav-link dropdown-toggle btn btn-link"
                        data-bs-toggle="dropdown">Admin</button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" th:href="@{/admin/categories}">Categories</a></li>
