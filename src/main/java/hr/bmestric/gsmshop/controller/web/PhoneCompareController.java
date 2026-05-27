@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.ToIntFunction;
 
 @Controller
 @RequestMapping("/compare")
@@ -141,19 +141,17 @@ public class PhoneCompareController {
         model.addAttribute("minChargingCount", countIntAt(phones, Phone::getChargingPower, minCharging));
     }
 
-    private int maxInt(List<Phone> phones, Function<Phone, Integer> getter) {
-        return phones.stream().filter(p -> getter.apply(p) != null)
-                .mapToInt(getter::apply).max().orElse(0);
+    private int maxInt(List<Phone> phones, ToIntFunction<Phone> getter) {
+        return phones.stream().mapToInt(getter).max().orElse(0);
     }
 
-    private int minInt(List<Phone> phones, Function<Phone, Integer> getter) {
-        return phones.stream().filter(p -> getter.apply(p) != null)
-                .mapToInt(getter::apply).min().orElse(0);
+    private int minInt(List<Phone> phones, ToIntFunction<Phone> getter) {
+        return phones.stream().mapToInt(getter).min().orElse(0);
     }
 
-    private long countIntAt(List<Phone> phones, Function<Phone, Integer> getter, int target) {
+    private long countIntAt(List<Phone> phones, ToIntFunction<Phone> getter, int target) {
         return phones.stream()
-                .filter(p -> getter.apply(p) != null && getter.apply(p) == target)
+                .filter(p -> getter.applyAsInt(p) == target)
                 .count();
     }
 

@@ -18,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequiredArgsConstructor
 public class CartController {
 
+    private static final String REDIRECT_CART = "redirect:/cart";
+
     private final CartService cartService;
 
     @GetMapping
@@ -47,18 +49,18 @@ public class CartController {
                                  @RequestParam int quantity,
                                  HttpSession session) {
         cartService.updateQuantity(session, productId, quantity);
-        return "redirect:/cart";
+        return REDIRECT_CART;
     }
 
     @PostMapping("/remove/{id}")
     public String removeFromCart(@PathVariable Long id, HttpSession session) {
         cartService.removeFromCart(session, id);
-        return "redirect:/cart";
+        return REDIRECT_CART;
     }
 
     @PostMapping("/clear")
     public String clearCart(HttpSession session) {
         cartService.clearCart(session);
-        return "redirect:/cart";
+        return REDIRECT_CART;
     }
 }

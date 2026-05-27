@@ -36,7 +36,7 @@ function updateCompareUI() {
     const ids = getIds();
 
     document.querySelectorAll('.compare-check').forEach(cb => {
-        const id = parseInt(cb.dataset.phoneId, 10);
+        const id = Number.parseInt(cb.dataset.phoneId, 10);
         cb.checked = ids.includes(id);
     });
 
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.compare-check').forEach(cb => {
         cb.addEventListener('change', () => {
-            togglePhone(parseInt(cb.dataset.phoneId, 10));
+            togglePhone(Number.parseInt(cb.dataset.phoneId, 10));
         });
     });
 });

@@ -20,6 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductSeeder {
 
+    private static final String APERTURE_F22 = "f/2.2";
+
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
@@ -46,7 +48,7 @@ public class ProductSeeder {
                 new BigDecimal("1299.99"), 15,
                 ScreenResolution.LTPO_QHD_PLUS, 6.8, 5000, 45, 12, 256, "Snapdragon 8 Gen 3",
                 cam(CameraType.MAIN, 200, "f/1.7"),
-                cam(CameraType.ULTRAWIDE, 12, "f/2.2"),
+                cam(CameraType.ULTRAWIDE, 12, APERTURE_F22),
                 cam(CameraType.TELEPHOTO, 50, "f/2.4"),
                 cam(CameraType.TELEPHOTO, 10, "f/4.9"));
 
@@ -55,7 +57,7 @@ public class ProductSeeder {
                 new BigDecimal("1199.99"), 20,
                 ScreenResolution.SUPER_RETINA_XDR, 6.7, 4441, 27, 8, 256, "A17 Pro",
                 cam(CameraType.MAIN, 48, "f/1.78"),
-                cam(CameraType.ULTRAWIDE, 12, "f/2.2"),
+                cam(CameraType.ULTRAWIDE, 12, APERTURE_F22),
                 cam(CameraType.TELEPHOTO, 12, "f/2.8"));
 
         createPhone(category, "Xiaomi 14",
@@ -63,7 +65,7 @@ public class ProductSeeder {
                 new BigDecimal("699.99"), 30,
                 ScreenResolution.AMOLED_PLUS, 6.36, 4610, 90, 12, 256, "Snapdragon 8 Gen 3",
                 cam(CameraType.MAIN, 50, "f/1.6"),
-                cam(CameraType.ULTRAWIDE, 50, "f/2.2"),
+                cam(CameraType.ULTRAWIDE, 50, APERTURE_F22),
                 cam(CameraType.TELEPHOTO, 50, "f/2.0"));
 
         createPhone(category, "Google Pixel 8 Pro",

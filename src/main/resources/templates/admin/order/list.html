@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Admin - Orders')}"></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Admin - Orders')}"><title>Admin - Orders</title></head>
 <body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/header :: navbar}"></nav>
 
@@ -12,19 +12,19 @@
         <div class="card-body">
             <form th:action="@{/admin/orders}" method="get" class="row g-3 align-items-end">
                 <div class="col-md-3">
-                    <label class="form-label">Customer Email</label>
-                    <input type="text" class="form-control" name="customerEmail"
+                    <label for="customerEmailFilter" class="form-label">Customer Email</label>
+                    <input type="text" class="form-control" id="customerEmailFilter" name="customerEmail"
                            placeholder="e.g. john@example.com"
                            th:value="${customerEmail}">
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Date From</label>
-                    <input type="date" class="form-control" name="dateFrom"
+                    <label for="dateFromFilter" class="form-label">Date From</label>
+                    <input type="date" class="form-control" id="dateFromFilter" name="dateFrom"
                            th:value="${dateFrom}">
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Date To</label>
-                    <input type="date" class="form-control" name="dateTo"
+                    <label for="dateToFilter" class="form-label">Date To</label>
+                    <input type="date" class="form-control" id="dateToFilter" name="dateTo"
                            th:value="${dateTo}">
                 </div>
                 <div class="col-md-3">

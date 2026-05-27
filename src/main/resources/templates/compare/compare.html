@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Compare Phones - GSM Shop')}"></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Compare Phones - GSM Shop')}"><title>Compare Phones - GSM Shop</title></head>
 <body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/header :: navbar}"></nav>
 
@@ -16,8 +16,8 @@
         <table class="table table-bordered table-hover align-middle text-center">
             <thead class="table-dark">
             <tr>
-                <th class="text-start" style="min-width: 160px;">Spec</th>
-                <th th:each="phone : ${phones}" th:text="${phone.name}" style="min-width: 200px;">Phone</th>
+                <th scope="col" class="text-start" style="min-width: 160px;">Spec</th>
+                <th scope="col" th:each="phone : ${phones}" th:text="${phone.name}" style="min-width: 200px;">Phone</th>
             </tr>
             </thead>
             <tbody>

@@ -40,7 +40,7 @@ public class CheckoutController {
             return "redirect:/cart";
         }
         model.addAttribute("cart", cart);
-        model.addAttribute("deliveryInfo", new DeliveryInfo());
+        model.addAttribute(DELIVERY_SESSION_KEY, new DeliveryInfo());
         return "checkout/form";
     }
 

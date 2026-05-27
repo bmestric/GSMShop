@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/head :: head('Products - GSM Shop')}"></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: head('Products - GSM Shop')}"><title>Products - GSM Shop</title></head>
 <body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/header :: navbar}"></nav>
 
@@ -40,7 +40,7 @@
                                th:data-phone-id="${product.id}"
                                th:id="'compare-' + ${product.id}">
                         <label class="form-check-label small text-muted"
-                               th:for="'compare-' + ${product.id}">
+                               for="compare-0" th:for="'compare-' + ${product.id}">
                             <i class="bi bi-bar-chart-steps"></i> Compare
                         </label>
                     </div>
@@ -56,7 +56,7 @@
                                 <input type="hidden" name="productId" th:value="${product.id}">
                                 <input type="number" name="quantity" value="1" min="1"
                                        th:max="${product.stockQuantity}"
-                                       class="form-control form-control-sm"
+                                       aria-label="Quantity" class="form-control form-control-sm"
                                        style="width: 55px;"
                                        th:disabled="${product.stockQuantity <= 0}">
                                 <button type="submit" class="btn btn-primary btn-sm"

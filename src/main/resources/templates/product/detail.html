@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/head :: head(${product?.name} + ' - GSM Shop')}"></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head :: head(${product?.name} + ' - GSM Shop')}"><title>GSM Shop</title></head>
 <body class="d-flex flex-column min-vh-100">
-<nav th:replace="~{fragments/header :: navbar}"></nav>
+<nav aria-label="Main navigation" th:replace="~{fragments/header :: navbar}"></nav>
 
 <main class="container flex-grow-1 py-4">
     <nav aria-label="breadcrumb">
@@ -51,7 +51,7 @@
             <!-- Phone Specs -->
             <div th:if="${product.isPhone()}" class="mt-4">
                 <h5>Specifications</h5>
-                <table class="table table-striped">
+                <table class="table table-striped" aria-label="Phone specifications">
                     <tbody>
                     <tr>
                         <th>Processor</th>
@@ -82,7 +82,7 @@
 
                 <!-- Camera Specs -->
                 <h5>Cameras</h5>
-                <table class="table table-striped">
+                <table class="table table-striped" aria-label="Camera specifications">
                     <thead>
                     <tr>
                         <th>Type</th>
@@ -103,7 +103,7 @@
             <!-- Accessory Info -->
             <div th:if="${product.isAccessory()}" class="mt-4">
                 <h5>Details</h5>
-                <table class="table table-striped">
+                <table class="table table-striped" aria-label="Accessory details">
                     <tbody>
                     <tr>
                         <th>Type</th>

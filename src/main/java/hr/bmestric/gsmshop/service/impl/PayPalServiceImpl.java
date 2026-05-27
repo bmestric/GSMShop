@@ -1,5 +1,4 @@
 package hr.bmestric.gsmshop.service.impl;
-
 import tools.jackson.databind.JsonNode;
 import hr.bmestric.gsmshop.service.PayPalService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +15,8 @@ import java.util.Map;
 @Slf4j
 @Service
 public class PayPalServiceImpl implements PayPalService {
+
+    private static final String AUTHORIZATION_HEADER = "Authorization";
 
     private final RestClient restClient;
     private final String clientId;
@@ -49,7 +50,7 @@ public class PayPalServiceImpl implements PayPalService {
 
         JsonNode response = restClient.post()
                 .uri("/v2/checkout/orders")
-                .header("Authorization", "Bearer " + accessToken)
+                .header(AUTHORIZATION_HEADER, "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(orderRequest)
                 .retrieve()
@@ -57,8 +58,8 @@ public class PayPalServiceImpl implements PayPalService {
 
         if (response != null) {
             for (JsonNode link : response.get("links")) {
-                if ("approve".equals(link.get("rel").asText())) {
-                    return link.get("href").asText();
+                if ("approve".equals(textOf(link.get("rel")))) {
+                    return textOf(link.get("href"));
                 }
             }
         }
@@ -71,13 +72,13 @@ public class PayPalServiceImpl implements PayPalService {
 
         JsonNode response = restClient.post()
                 .uri("/v2/checkout/orders/{orderId}/capture", orderId)
-                .header("Authorization", "Bearer " + accessToken)
+                .header(AUTHORIZATION_HEADER, "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .body(JsonNode.class);
 
-        if (response != null && "COMPLETED".equals(response.get("status").asText())) {
-            return response.get("id").asText();
+        if (response != null && "COMPLETED".equals(textOf(response.get("status")))) {
+            return textOf(response.get("id"));
         }
         throw new IllegalStateException("PayPal capture failed");
     }
@@ -88,15 +89,20 @@ public class PayPalServiceImpl implements PayPalService {
 
         JsonNode response = restClient.post()
                 .uri("/v1/oauth2/token")
-                .header("Authorization", "Basic " + credentials)
+                .header(AUTHORIZATION_HEADER, "Basic " + credentials)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body("grant_type=client_credentials")
                 .retrieve()
                 .body(JsonNode.class);
 
         if (response != null) {
-            return response.get("access_token").asText();
+            return textOf(response.get("access_token"));
         }
         throw new IllegalStateException("Failed to obtain PayPal access token");
+    }
+
+    @SuppressWarnings("java:S1874")
+    private static String textOf(JsonNode node) {
+        return (node != null && node.isTextual()) ? node.textValue() : "";
     }
 }

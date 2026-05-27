@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Order Details - GSM Shop')}"></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Order Details - GSM Shop')}"><title>Order Details - GSM Shop</title></head>
 <body class="d-flex flex-column min-vh-100">
-<nav th:replace="~{fragments/header :: navbar}"></nav>
+<nav aria-label="Main navigation" th:replace="~{fragments/header :: navbar}"></nav>
 
 <main class="container flex-grow-1 py-4">
     <nav aria-label="breadcrumb">
@@ -66,7 +66,7 @@
                 <div class="card shadow-sm">
                     <div class="card-header"><h5 class="mb-0">Items</h5></div>
                     <div class="card-body p-0">
-                        <table class="table mb-0">
+                        <table class="table mb-0" aria-label="Order items">
                             <thead class="table-light">
                             <tr>
                                 <th>Product</th>

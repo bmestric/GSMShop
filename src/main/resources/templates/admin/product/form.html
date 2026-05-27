@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/head :: head('Admin - Product Form')}"></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Admin - Product Form')}"><title>Admin - Product Form</title></head>
 <body class="d-flex flex-column min-vh-100">
 <nav th:replace="~{fragments/header :: navbar}"></nav>
 
@@ -14,7 +14,7 @@
 
                 <!-- Product Type Selector -->
                 <div class="mb-3">
-                    <label class="form-label">Product Type</label>
+                    <label for="productType" class="form-label">Product Type</label>
                     <select class="form-select" name="productType" id="productType"
                             th:disabled="${product != null && product.id != null}">
                         <option value="PHONE"
@@ -72,18 +72,18 @@
                     <h5 class="mt-4 mb-3">Phone Specifications</h5>
                     <div class="row mb-3">
                         <div class="col-md-4">
-                            <label class="form-label">Processor</label>
-                            <input type="text" class="form-control" name="processor"
+                            <label for="processor" class="form-label">Processor</label>
+                            <input type="text" class="form-control" id="processor" name="processor"
                                    th:value="${product != null && product.isPhone() ? product.processor : ''}">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Screen Size (inches)</label>
-                            <input type="number" class="form-control" name="screenSize" step="0.01"
+                            <label for="screenSize" class="form-label">Screen Size (inches)</label>
+                            <input type="number" class="form-control" id="screenSize" name="screenSize" step="0.01"
                                    th:value="${product != null && product.isPhone() ? product.screenSize : ''}">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Screen Resolution</label>
-                            <select class="form-select" name="screenResolution">
+                            <label for="screenResolution" class="form-label">Screen Resolution</label>
+                            <select class="form-select" id="screenResolution" name="screenResolution">
                                 <option value="">-- Select --</option>
                                 <option th:each="res : ${resolutions}"
                                         th:value="${res.name()}"
@@ -96,23 +96,23 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-3">
-                            <label class="form-label">RAM (GB)</label>
-                            <input type="number" class="form-control" name="ramGb"
+                            <label for="ramGb" class="form-label">RAM (GB)</label>
+                            <input type="number" class="form-control" id="ramGb" name="ramGb"
                                    th:value="${product != null && product.isPhone() ? product.ramGb : ''}">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Storage (GB)</label>
-                            <input type="number" class="form-control" name="romGb"
+                            <label for="romGb" class="form-label">Storage (GB)</label>
+                            <input type="number" class="form-control" id="romGb" name="romGb"
                                    th:value="${product != null && product.isPhone() ? product.romGb : ''}">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Battery (mAh)</label>
-                            <input type="number" class="form-control" name="batteryCapacity"
+                            <label for="batteryCapacity" class="form-label">Battery (mAh)</label>
+                            <input type="number" class="form-control" id="batteryCapacity" name="batteryCapacity"
                                    th:value="${product != null && product.isPhone() ? product.batteryCapacity : ''}">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label">Charging (W)</label>
-                            <input type="number" class="form-control" name="chargingPower"
+                            <label for="chargingPower" class="form-label">Charging (W)</label>
+                            <input type="number" class="form-control" id="chargingPower" name="chargingPower"
                                    th:value="${product != null && product.isPhone() ? product.chargingPower : ''}">
                         </div>
                     </div>
@@ -157,13 +157,13 @@
                     <h5 class="mt-4 mb-3">Accessory Details</h5>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">Accessory Type</label>
-                            <input type="text" class="form-control" name="accessoryType"
+                            <label for="accessoryType" class="form-label">Accessory Type</label>
+                            <input type="text" class="form-control" id="accessoryType" name="accessoryType"
                                    th:value="${product != null && product.isAccessory() ? product.accessoryType : ''}">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Compatible Models</label>
-                            <input type="text" class="form-control" name="compatibleModels"
+                            <label for="compatibleModels" class="form-label">Compatible Models</label>
+                            <input type="text" class="form-control" id="compatibleModels" name="compatibleModels"
                                    th:value="${product != null && product.isAccessory() ? product.compatibleModels : ''}">
                         </div>
                     </div>
